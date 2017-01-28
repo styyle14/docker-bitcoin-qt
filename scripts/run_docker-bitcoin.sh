@@ -8,9 +8,9 @@ DOCKER_BITCOIN_USERNAME="bitcoin"
 DOCKER_BITCOIN_DATADIR_MOUNTPOINT="/home/${DOCKER_BITCOIN_USERNAME}/datadir"
 DOCKER_BITCOIN_IMAGE_TAG="bitcoin-qt"
 
-if [ $# -ne 1 ]; then
+if [ $# -lt 1 ]; then
 	echo "Incorrect number of parameters."
-	echo "Usage: $(basename "$0") [docker-bitcoin data dir]"
+	echo "Usage: $(basename "$0") [docker-bitcoin datadir] <docker run parameters...>"
 	echo "Exiting now."
 	exit 1
 fi
@@ -28,5 +28,6 @@ docker run -it \
 	-v "${HOME}/.Xauthority:/tmp/.Xauthority" \
 	-v "/tmp/.X11-unix:/tmp/.X11-unix" \
 	-v "${DOCKER_BITCOIN_DATADIR}:${DOCKER_BITCOIN_DATADIR_MOUNTPOINT}" \
-	"$DOCKER_BITCOIN_IMAGE_TAG" ${@:2}
+	${@:2} \
+	"$DOCKER_BITCOIN_IMAGE_TAG"
 
