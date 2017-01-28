@@ -4,7 +4,10 @@ ARG username="bitcoin"
 ARG password="${username}"
 
 RUN \
-	apt-get update && \
+	export DEBIAN_FRONTEND=noninteractive && \
+	apt-get clean && \
+	apt-get update -y && \
+	apt-get upgrade -y && \
 	apt-get install -y \
 		build-essential \
 		libtool \
@@ -36,7 +39,9 @@ RUN \
 		--disable-shared \
 		--with-pic && \
 	make && \
-	make install
+	make install && \
+	cd ../../ && \
+	rm -rf db-4.8.30.NC/
 
 RUN \
 	wget https://github.com/bitcoin/bitcoin/archive/master.tar.gz && \
@@ -48,7 +53,23 @@ RUN \
 		--with-gui=qt5 \
 		--enable-hardening && \
 	make && \
-	make install
+	make install && \
+	cd ../ && \
+	rm -rf bitcoin-master
+
+RUN \
+	export DEBIAN_FRONTEND=noninteractive && \
+	apt-get remove -y \
+		build-essential \
+		libtool \
+		autotools-dev \
+		automake \
+		pkg-config \
+		bsdmainutils \
+		protobuf-compiler \
+		wget && \ 
+	apt-get autoremove -y && \
+	rm -rf /var/lib/apt/* /var/cache/apt/*
 
 RUN \
 	useradd \
@@ -61,5 +82,5 @@ RUN \
 USER "${username}"
 VOLUME ["/home/${username}/datadir"]
 WORKDIR "/home/${username}/datadir"
-CMD bitcoin-qt -datadir="${PWD}"
+CMD bitcoin-qt -datadir="${PWD}"; rm -f .lock
 
