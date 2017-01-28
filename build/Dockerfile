@@ -82,5 +82,6 @@ RUN \
 USER "${username}"
 VOLUME ["/home/${username}/datadir"]
 WORKDIR "/home/${username}/datadir"
+EXPOSE 8333
 CMD bitcoin-qt -datadir="${PWD}"; rm -f .lock
 
