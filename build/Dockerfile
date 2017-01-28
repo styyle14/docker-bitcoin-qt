@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:latest
 
 ARG username="bitcoin"
 ARG password="${username}"
