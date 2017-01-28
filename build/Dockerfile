@@ -41,7 +41,7 @@ RUN \
 	make && \
 	make install && \
 	cd ../../ && \
-	rm -rf db-4.8.30.NC/
+	rm -r db-4.8.30.NC/
 
 RUN \
 	wget https://github.com/bitcoin/bitcoin/archive/master.tar.gz && \
@@ -55,7 +55,7 @@ RUN \
 	make && \
 	make install && \
 	cd ../ && \
-	rm -rf bitcoin-master
+	rm -r bitcoin-master
 
 RUN \
 	export DEBIAN_FRONTEND=noninteractive && \
